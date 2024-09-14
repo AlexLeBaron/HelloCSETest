@@ -67,7 +67,7 @@ class AdminAuthController extends Controller
      *      @OA\RequestBody(
      *          required=true,
      *          @OA\JsonContent(
-     *              @OA\Property(property="email",type="string",example="admin@example.com"),
+     *              @OA\Property(property="email",type="string",example="jean@test.com"),
      *              @OA\Property(property="password",type="string",example="password123"),
      *          )
      *      ),

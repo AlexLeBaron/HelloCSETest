@@ -28,11 +28,14 @@ class ProfileController extends Controller
      *     security={{"sanctum": {}}},
      *     @OA\RequestBody(
      *         required=true,
-     *         @OA\JsonContent(
-     *             @OA\Property(property="firstname", type="string", example="Jean"),
-     *             @OA\Property(property="lastname", type="string", example="Test"),
-     *             @OA\Property(property="status", type="string", example="active"),
-     *             @OA\Property(property="image", type="string", format="binary", description="Profile image")
+     *         @OA\MediaType(
+     *             mediaType="multipart/form-data",
+     *             @OA\Schema(
+     *                 @OA\Property(property="firstname", type="string", example="Jean"),
+     *                 @OA\Property(property="lastname", type="string", example="Test"),
+     *                 @OA\Property(property="status", type="string", example="active"),
+     *                 @OA\Property(property="image", type="string", format="binary", description="Profile image")
+     *             )
      *         )
      *     ),
      *     @OA\Response(
@@ -104,11 +107,14 @@ class ProfileController extends Controller
      *     ),
      *     @OA\RequestBody(
      *         required=true,
-     *         @OA\JsonContent(
-     *             @OA\Property(property="firstname", type="string", example="Jean"),
-     *             @OA\Property(property="lastname", type="string", example="Test"),
-     *             @OA\Property(property="status", type="string", example="active"),
-     *             @OA\Property(property="image", type="string", format="binary", description="Profile image")
+     *         @OA\MediaType(
+     *             mediaType="multipart/form-data",
+     *             @OA\Schema(
+     *                 @OA\Property(property="firstname", type="string", example="Jean"),
+     *                 @OA\Property(property="lastname", type="string", example="Test"),
+     *                 @OA\Property(property="status", type="string", example="active"),
+     *                 @OA\Property(property="image", type="string", format="binary", description="Profile image")
+     *             )
      *         )
      *     ),
      *     @OA\Response(

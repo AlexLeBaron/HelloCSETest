@@ -35,7 +35,7 @@
                                 "properties": {
                                     "email": {
                                         "type": "string",
-                                        "example": "admin@example.com"
+                                        "example": "jean@test.com"
                                     },
                                     "password": {
                                         "type": "string",
@@ -64,7 +64,7 @@
                                         },
                                         "email": {
                                             "type": "string",
-                                            "example": "admin@example.com"
+                                            "example": "jean@test.com"
                                         },
                                         "created_at": {
                                             "type": "string",
@@ -105,7 +105,7 @@
                                 "properties": {
                                     "email": {
                                         "type": "string",
-                                        "example": "admin@example.com"
+                                        "example": "jean@test.com"
                                     },
                                     "password": {
                                         "type": "string",
@@ -151,7 +151,7 @@
                 "requestBody": {
                     "required": true,
                     "content": {
-                        "application/json": {
+                        "multipart/form-data": {
                             "schema": {
                                 "properties": {
                                     "firstname": {
@@ -275,7 +275,7 @@
                 "requestBody": {
                     "required": true,
                     "content": {
-                        "application/json": {
+                        "multipart/form-data": {
                             "schema": {
                                 "properties": {
                                     "firstname": {
@@ -425,6 +425,14 @@
                 },
                 "type": "object"
             }
+        },
+        "securitySchemes": {
+            "sanctum": {
+                "type": "apiKey",
+                "description": "Enter token in format (Bearer <token>)",
+                "name": "Authorization",
+                "in": "header"
+            }
         }
     },
     "tags": [
@@ -435,6 +443,11 @@
         {
             "name": "Profiles",
             "description": "Profiles"
+        }
+    ],
+    "security": [
+        {
+            "sanctum": []
         }
     ]
 }
