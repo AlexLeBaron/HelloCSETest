@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Storage;
 class ProfileService implements ProfileServiceInterface
 {
     /**
-     * Créer un profil
+     * Create a profile
      * @param array $data
      * @return Profile
      */
@@ -23,7 +23,7 @@ class ProfileService implements ProfileServiceInterface
     }
 
     /**
-     * Mettre a jour un profil
+     * Update an existing profile
      * @param Profile $profile
      * @param array $data
      * @return Profile
@@ -44,7 +44,7 @@ class ProfileService implements ProfileServiceInterface
     }
 
     /**
-     * Supprimer un profil
+     * Delete a profile
      * @param Profile $profile
      * @return bool
      */

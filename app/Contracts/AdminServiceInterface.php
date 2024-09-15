@@ -7,14 +7,14 @@ use App\Models\Admin;
 interface AdminServiceInterface
 {
     /**
-     * Enregistrer un admin
+     * Register an admin
      * @param array $data
      * @return Admin
      */
     public function registerAdmin(array $data): Admin;
 
     /**
-     * Authentifier un admin
+     * Authenticate an admin
      * @param string $email
      * @param string $password
      * @return string|null

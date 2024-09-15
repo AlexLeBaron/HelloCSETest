@@ -35,16 +35,14 @@ use App\Http\Controllers\ProfileController;
  * )
  */
 
-// Routes d'authentication
+// Authentication Routes
 Route::post('/admin/register',[AdminAuthController::class, 'register']); // Enregister un administrateur
 Route::post('/admin/login',[AdminAuthController::class, 'login']); // Authentifier un administrateur
 
-// Routes de gestion de profil
+// Profiles Routes
 Route::middleware('auth:sanctum')->group(function() {
     Route::post('/profiles', [ProfileController::class, 'store']);  // Créer un profil
     Route::put('/profiles/{id}', [ProfileController::class, 'update']);  // Modifier un profil
     Route::delete('/profiles/{id}', [ProfileController::class, 'destroy']);  // Supprimer un profil
 });
-
-// Routes d'acces aux donnees publiques
 Route::get('/profiles/active', [ProfileController::class, 'indexActive']); // Acceder aux profils actifs

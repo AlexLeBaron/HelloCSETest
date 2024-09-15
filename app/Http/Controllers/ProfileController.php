@@ -168,6 +168,7 @@ class ProfileController extends Controller
     {
         $profile = Profile::findOrFail($id);
         $this->profileService->deleteProfile($profile);
+        
         return response()->json(['message' => 'Profile deleted successfully']);
     }
 }

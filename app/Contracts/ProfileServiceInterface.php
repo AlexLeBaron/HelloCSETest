@@ -7,14 +7,14 @@ use App\Models\Profile;
 interface ProfileServiceInterface
 {
     /**
-     * Créer un profil
+     * Create a profile
      * @param array $data
      * @return Profile
      */
     public function createProfile(array $data): Profile;
 
     /**
-     * Mettre a jour un profil existant
+     * Update an existing profile
      * @param Profile $profile
      * @param array $data
      * @return Profile
@@ -22,7 +22,7 @@ interface ProfileServiceInterface
     public function updateProfile(Profile $profile, array $data): Profile;
 
     /**
-     * Supprimer un profil
+     * Delete a profile
      * @param Profile $profile
      * @return bool
      */

@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Hash;
 class AdminService implements AdminServiceInterface
 {
     /**
-     * Enregistrer un admin
+     * Register an admin
      * @param array $data
      * @return Admin
      */
@@ -23,7 +23,7 @@ class AdminService implements AdminServiceInterface
     }
 
     /**
-     * Authentifier un administrateur.
+     * Authenticate an admin
      * @param string $email
      * @param string $password
      * @return string|null
