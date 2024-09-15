@@ -21,6 +21,12 @@ RUN a2enmod rewrite
 # Copy app files in the web repository
 COPY . /var/www/html
 
+# Copier le script wait-for-it
+COPY ./wait-for-it.sh /usr/local/bin/wait-for-it.sh
+
+# Donner les permissions d'exécution au script
+RUN chmod +x /usr/local/bin/wait-for-it.sh
+
 # Execute necessary commands after copying files
 WORKDIR /var/www/html
 
@@ -46,5 +52,5 @@ RUN chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
 # Expose port 80
 EXPOSE 80
 
-# Start Apache
-CMD ["apache2-foreground"]
+# Start Apache after waiting for MySQL to be ready and execute migration and seeding
+CMD ["wait-for-it.sh", "db", "--", "bash", "-c", "php artisan migrate --force && php artisan db:seed && apache2-foreground"]
