@@ -1,6 +1,18 @@
 version: '3.8'
 
 services:
+  db:
+    image: mysql:8.0
+    container_name: laravel_db
+    ports:
+      - "3307:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: hellocse
+    networks:
+      - laravel
+    volumes:
+      - db_data:/var/lib/mysql
   app:
     build:
       context: .
@@ -21,18 +33,6 @@ services:
     networks:
       - laravel
 
-  db:
-    image: mysql:8.0
-    container_name: laravel_db
-    ports:
-      - "3307:3306"
-    environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: hellocse
-    networks:
-      - laravel
-    volumes:
-      - db_data:/var/lib/mysql
 
 networks:
   laravel:
