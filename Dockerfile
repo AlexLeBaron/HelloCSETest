@@ -1,7 +1,7 @@
-# Use official PHP 8.* with Apache
+# Use official PHP image with Apache
 FROM php:8.1-apache
 
-# Install required PHP extensions
+# Install necessary Laravel extensions
 RUN apt-get update && apt-get install -y \
     libpng-dev \
     libjpeg-dev \
@@ -12,23 +12,33 @@ RUN apt-get update && apt-get install -y \
     unzip \
     && docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd
 
-# Activate Apache rewrite module
-RUN a2enmod rewrite
-
-# Copy Apache configuration in container
-COPY ./apache/000-default.conf /etc/apache2/sites-available/000-default.conf
-
-# Install Composer
+# Install composer globally
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# Install laravel project dependencies
+# Activate Apache rewrite module for cleaner url
+RUN a2enmod rewrite
+
+# Copy app files in the web repository
+COPY . /var/www/html
+
+# Execute necessary commands after copying files
 WORKDIR /var/www/html
-COPY . .
-RUN composer install
+
+# Install Composer dependencies
+RUN composer install --no-interaction --prefer-dist --optimize-autoloader
 
 # Make sur storage and cache folders are accessible
-RUN chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
 RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
+RUN chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
+
+# Generate Laravel api key
+RUN php artisan key:generate
+
+# Execute migration
+RUN php artisan migrate --force
+
+# Execute seeding
+RUN php artisan db:seed
 
 # Expose port 80
 EXPOSE 80
