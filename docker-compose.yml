@@ -1,11 +1,9 @@
-version: '3.8'
-
 services:
   db:
     image: mysql:8.0
     container_name: laravel_db
     ports:
-      - "3307:3306"
+      - "3306:3306"
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: hellocse
@@ -24,7 +22,7 @@ services:
       - .:/var/www/html
     environment:
       - DB_HOST=db
-      - DB_PORT=3307
+      - DB_PORT=3306
       - DB_DATABASE=hellocse
       - DB_USERNAME=root
       - DB_PASSWORD=root

@@ -30,8 +30,8 @@ RUN chmod +x /usr/local/bin/wait-for-it.sh
 # Execute necessary commands after copying files
 WORKDIR /var/www/html
 
-# Copy .env.example to .env if it doesn't exist yet
-RUN if [ ! -f .env ]; then cp .env.example .env; fi
+# Copy .env.example to .env
+COPY .env.example .env
 
 # Install Composer dependencies
 RUN composer install --no-interaction --prefer-dist --optimize-autoloader
@@ -39,12 +39,19 @@ RUN composer install --no-interaction --prefer-dist --optimize-autoloader
 # Generate application key
 RUN php artisan key:generate
 
+# Link storage folder to public folder
+RUN php artisan storage:link
+
 # Check for folders permissions
 RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
 RUN chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
 
+RUN php artisan migrate --force
+
+RUN php artisan db:seed
+
 # Expose port 80
 EXPOSE 80
 
-# Start Apache after waiting for MySQL to be ready and execute migration and seeding
-CMD ["wait-for-it.sh", "db", "--", "bash", "-c", "php artisan migrate --force && php artisan db:seed && apache2-foreground"]
+# Start Apache
+CMD ["apache2-foreground"]
