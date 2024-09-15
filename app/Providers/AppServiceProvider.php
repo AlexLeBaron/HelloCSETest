@@ -26,6 +26,17 @@ use App\Services\AdminService;
  *     url="http://localhost:8000/api",
  *     description="Local server"
  * )
+ * 
+ * @OA\Parameter(
+ *     name="Accept",
+ *     in="header",
+ *     required=true,
+ *     description="Accept header",
+ *     @OA\Schema(
+ *         type="string",
+ *         default="application/json"
+ *     )
+ * )
  */
 class AppServiceProvider extends ServiceProvider
 {
