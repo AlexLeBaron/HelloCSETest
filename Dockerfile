@@ -17,16 +17,12 @@ RUN apt-get update && apt-get install -y \
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 # Activate Apache rewrite module for cleaner url
-RUN a2enmod rewrite
+RUN a2enmod rewrite 
+
+COPY ./apache/000-default.conf /etc/apache2/sites-available/000-default.conf
 
 # Copy app files in the web repository
 COPY . /var/www/html
-
-# Copier le script wait-for-it
-COPY ./wait-for-it.sh /usr/local/bin/wait-for-it.sh
-
-# Donner les permissions d'exécution au script
-RUN chmod +x /usr/local/bin/wait-for-it.sh
 
 # Execute necessary commands after copying files
 WORKDIR /var/www/html
@@ -46,7 +42,6 @@ RUN php artisan storage:link
 # Check for folders permissions
 RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
 RUN chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
-
 
 # RUN php artisan migrate:fresh and db:seed after waiting for mysql to be initiated
 CMD bash -c "sleep 10 && php artisan migrate:fresh && php artisan db:seed && apache2-foreground"
