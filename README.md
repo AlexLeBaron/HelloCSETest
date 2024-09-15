@@ -24,7 +24,7 @@ cd HelloCSETest
 Simply run:
 
 ```bash
-docker compose up -d
+docker compose up --build -d
 ``` 
 That's it! The Laravel application, along with the MySQL database, will be built and started. The application key will be generated, and migrations will be applied automatically.
 
