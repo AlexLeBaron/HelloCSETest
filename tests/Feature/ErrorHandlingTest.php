@@ -54,7 +54,7 @@ class ErrorHandlingTest extends TestCase
     public function returns_a_404_when_updating_non_existent_profile()
     {
         $admin = Admin::factory()->create();
-        Sanctum::actingAs($admin);  // Authentifier l'admin
+        Sanctum::actingAs($admin);  // Authenticate as admin
 
         $response = $this->putJson('/api/profiles/9999', [
             'first_name' => 'Jean',

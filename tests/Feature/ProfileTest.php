@@ -20,21 +20,21 @@ class ProfileTest extends TestCase
      */
     public function admin_can_create_a_profile(): void
     {
-        //Simulation de l'environnement de stockage
+        //Simulate stockage environment
         Storage::fake('public');
 
-        // Creation d'un admin et login        
+        // Create an admin and login        
         $admin = Admin::factory()->create();
         $token = $admin->createToken('admin-token')->plainTextToken;
 
-        // Creation d'un faux fichier image
+        // Create a fake image
         $file = UploadedFile::fake()->image('avatar.jpg');
  
-        // Creation d'un fake profile
+        // Create a fake profile
         $firstName = $this->faker->firstName;
         $lastName = $this->faker->lastName;
         
-        // Creation d'un profil
+        // Profile creation request
         $response = $this->postJson('api/profiles', [
             'firstname' => $firstName,
             'lastname' => $lastName,
@@ -68,7 +68,7 @@ class ProfileTest extends TestCase
             'status' => 'active',
         ]);
 
-        // Verifie que la reponse est 401 Unauthorized
+        // Check if response is 401 Unauthorized
         $response->assertStatus(401);
 
         $this->assertDatabaseMissing('profiles', [
@@ -82,7 +82,7 @@ class ProfileTest extends TestCase
      */
     public function returns_active_profiles_without_status_for_guests(): void
     {
-        //Creation de profils
+        //Profiles creation
         Profile::factory()->create([
             'firstname' => $this->faker->firstName,
             'lastname' => $this->faker->lastName,
@@ -98,8 +98,8 @@ class ProfileTest extends TestCase
         $response = $this->getJson('/api/profiles/active');
 
         $response->assertStatus(200)
-                    ->assertJsonCount(1) // On ne recupere pas le profil inactif
-                    ->assertJsonMissing(['status']); // Le champ status est exclu
+                    ->assertJsonCount(1) // We do not get the inactive profile
+                    ->assertJsonMissing(['status']); // We do not get the status field
     }
 
     /**
@@ -107,11 +107,11 @@ class ProfileTest extends TestCase
      */
     public function returns_active_profiles_with_status_for_authenticated_admin(): void
     {
-        // Creation d'un administrateur et authentication
+        // Admin creation and authenticate
         $admin = Admin::factory()->create();
         Sanctum::actingAs($admin);
 
-        // Creation de profils
+        // Profiles creation
         Profile::factory()->create([
             'firstname' => $this->faker->firstName,
             'lastname' => $this->faker->lastName,
@@ -124,12 +124,12 @@ class ProfileTest extends TestCase
             'status' => 'inactive',
         ]);
 
-        // Recuperation des profils actifs avec authentication
+        // Getting active profile while authenticate
         $response = $this->getJson('/api/profiles/active');
 
         $response->assertStatus(200)
-                    ->assertJsonCount(1) // Un seul profil actif
-                    ->assertJsonFragment(['status' => 'active']); // Le champ status est accessible
+                    ->assertJsonCount(1) // Only one active profile
+                    ->assertJsonFragment(['status' => 'active']); // Status field is not hidden
     }
 
     /**
@@ -137,18 +137,15 @@ class ProfileTest extends TestCase
      */
     public function authenticated_admin_can_update_a_profile(): void
     {
-        //Creation d'un administrateur et authentication
         $admin = Admin::factory()->create();
         Sanctum::actingAs($admin);
 
-        // Creation d'un profil
         $profile = Profile::factory()->create([
             'firstname' => $this->faker->firstName,
             'lastname' => $this->faker->lastName,
             'status' => 'pending',
         ]);
         
-        // Requete de mise a jour avec authentication
         $response = $this->putJson("/api/profiles/{$profile->id}", [
             'firstname' => 'Updated',
             'status' => 'active',
@@ -167,7 +164,6 @@ class ProfileTest extends TestCase
      */
     public function guest_cannot_update_a_profile(): void
     {
-        // Creation d'un profil
         $profile = Profile::factory()->create([
             'firstname' => $this->faker->firstName,
             'lastname' => $this->faker->lastName,
@@ -186,11 +182,9 @@ class ProfileTest extends TestCase
      */
     public function authenticated_admin_can_delete_a_profile(): void
     {
-        //Creation d'un administrateur et authentication
         $admin = Admin::factory()->create();
         $token = $admin->createToken('admin-token')->plainTextToken;
 
-        // Creation d'un profil
         $profile = Profile::factory()->create([
             'firstname' => $this->faker->firstName,
             'lastname' => $this->faker->lastName,
@@ -212,7 +206,6 @@ class ProfileTest extends TestCase
      */
     public function guest_cannot_delete_a_profile(): void
     {
-        // Creation d'un profil
         $profile = Profile::factory()->create([
             'firstname' => $this->faker->firstName,
             'lastname' => $this->faker->lastName,
@@ -229,7 +222,6 @@ class ProfileTest extends TestCase
      */
     public function rejects_invalid_profile_data(): void
     {
-        //Creation d'un administrateur
         $admin = Admin::factory()->create();
         Sanctum::actingAs($admin);
 
@@ -249,7 +241,6 @@ class ProfileTest extends TestCase
      */
     public function reject_invalid_update_data(): void
     {
-        //Creation d'un administrateur
         $admin = Admin::factory()->create();
         Sanctum::actingAs($admin);
 

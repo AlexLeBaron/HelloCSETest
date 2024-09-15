@@ -15,10 +15,10 @@ class ProfileService implements ProfileServiceInterface
      */
     public function createProfile(array $data): Profile
     {
-        // Enregistrer l'image dans le répertoire public si existante
+        // Save image in public repository if it exists
         if (isset($data['image'])) $data['image'] = $data['image']->store('images', 'public');
         
-        // Créer le profil
+        // Create profile
         return Profile::create($data);
     }
 
@@ -31,13 +31,13 @@ class ProfileService implements ProfileServiceInterface
     public function updateProfile(Profile $profile, array $data): Profile
     {
         if (isset($data['image'])) {
-            // Supprimer l'ancienne image si elle existe
+            // Delete old image if it exists
             Storage::disk('public')->delete($profile->image);
-            // Enregistrer la nouvelle image
+            // Save new image
             $data['image'] = $data['image']->store('images', 'public');
         }
 
-        // Mettre à jour le profil
+        // Update profile
         $profile->update($data);
 
         return $profile;
@@ -50,10 +50,10 @@ class ProfileService implements ProfileServiceInterface
      */
     public function deleteProfile(Profile $profile): bool
     {
-        // Supprimer l'image liee au profil
+        // Delete image linked to profile
         Storage::disk('public')->delete($profile->image);
         
-        // Supprimer le profil
+        // Delete profile
         return $profile->delete();
     }
 }
