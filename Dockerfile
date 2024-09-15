@@ -10,6 +10,7 @@ RUN apt-get update && apt-get install -y \
     libxml2-dev \
     zip \
     unzip \
+    && docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd
 
 # Install composer globally
@@ -46,12 +47,9 @@ RUN php artisan storage:link
 RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
 RUN chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
 
-RUN php artisan migrate --force
 
-RUN php artisan db:seed
+# RUN php artisan migrate:fresh and db:seed after waiting for mysql to be initiated
+CMD bash -c "sleep 10 && php artisan migrate:fresh && php artisan db:seed && apache2-foreground"
 
 # Expose port 80
-EXPOSE 80
-
-# Start Apache
-CMD ["apache2-foreground"]
+EXPOSE 80 
