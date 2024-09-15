@@ -16,15 +16,15 @@ Ensure you have the following tools installed on your machine:
 Clone the project from GitHub:
 
 ```bash
-git clone https://github.com/your-username/your-repo.git
-cd your-repo
+git clone git@github.com:AlexLeBaron/HelloCSETest.git
+cd HelloCSETest
 ``` 
 ### 2. Build and start the Docker containers
 
 Simply run:
 
 ```bash
-docker compose up -d
+docker compose up --build -d
 ``` 
 That's it! The Laravel application, along with the MySQL database, will be built and started. The application key will be generated, and migrations will be applied automatically.
 
