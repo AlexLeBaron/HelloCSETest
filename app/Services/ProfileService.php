@@ -15,8 +15,8 @@ class ProfileService implements ProfileServiceInterface
      */
     public function createProfile(array $data): Profile
     {
-        // Enregistrer l'image dans le répertoire public
-        $data['image'] = $data['image']->store('images', 'public');
+        // Enregistrer l'image dans le répertoire public si existante
+        if (isset($data['image'])) $data['image'] = $data['image']->store('images', 'public');
         
         // Créer le profil
         return Profile::create($data);

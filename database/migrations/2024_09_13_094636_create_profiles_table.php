@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('firstname');
             $table->string('lastname');
-            $table->string('image');
+            $table->string('image')->nullable();
             $table->enum('status', ['inactive', 'pending', 'active'])->index();
             $table->timestamps();
         });
