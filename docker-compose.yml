@@ -16,6 +16,8 @@ services:
       - DB_DATABASE=hellocse
       - DB_USERNAME=root
       - DB_PASSWORD=root
+    depends_on:
+      - db
     networks:
       - laravel
 
