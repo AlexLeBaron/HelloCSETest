@@ -1,0 +1,41 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: hellocsetest_app
+    ports:
+      - "8000:80"
+    volumes:
+      - .:/var/www/html
+    environment:
+      - DB_HOST=db
+      - DB_PORT=3306
+      - DB_DATABASE=hellocse
+      - DB_USERNAME=alex
+      - DB_PASSWORD=ag44CulhG
+    networks:
+      - laravel
+
+  db:
+    image: mysql:8.0
+    container_name: laravel_db
+    ports:
+      - "3307:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: hellocse
+      MYSQL_USER: alex
+      MYSQL_PASSWORD: ag44CulhG
+    networks:
+      - laravel
+    volumes:
+      - db_data:/var/lib/mysql
+
+networks:
+  laravel:
+
+volumes:
+  db_data:
