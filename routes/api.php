@@ -36,13 +36,13 @@ use App\Http\Controllers\ProfileController;
  */
 
 // Authentication Routes
-Route::post('/admin/register',[AdminAuthController::class, 'register']); // Enregister un administrateur
-Route::post('/admin/login',[AdminAuthController::class, 'login']); // Authentifier un administrateur
+Route::post('/admin/register',[AdminAuthController::class, 'register']); // Register an administrator
+Route::post('/admin/login',[AdminAuthController::class, 'login']); // Authenticate an administrator
 
 // Profiles Routes
 Route::middleware('auth:sanctum')->group(function() {
-    Route::post('/profiles', [ProfileController::class, 'store']);  // Créer un profil
-    Route::put('/profiles/{id}', [ProfileController::class, 'update']);  // Modifier un profil
-    Route::delete('/profiles/{id}', [ProfileController::class, 'destroy']);  // Supprimer un profil
+    Route::post('/profiles', [ProfileController::class, 'store']);  // Create a profile
+    Route::put('/profiles/{id}', [ProfileController::class, 'update']);  // Update an existing profile
+    Route::delete('/profiles/{id}', [ProfileController::class, 'destroy']);  // Delete a profile
 });
-Route::get('/profiles/active', [ProfileController::class, 'indexActive']); // Acceder aux profils actifs
+Route::get('/profiles/active', [ProfileController::class, 'indexActive']); // Get active profiles
