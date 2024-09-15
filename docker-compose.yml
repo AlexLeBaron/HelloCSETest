@@ -27,8 +27,6 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: hellocse
-      MYSQL_USER: root
-      MYSQL_PASSWORD: root
     networks:
       - laravel
     volumes:

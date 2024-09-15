@@ -24,14 +24,13 @@ COPY . /var/www/html
 # Execute necessary commands after copying files
 WORKDIR /var/www/html
 
+# Copy .env.example to .env if it doesn't exist yet
+RUN if [ ! -f .env ]; then cp .env.example .env; fi
+
 # Install Composer dependencies
 RUN composer install --no-interaction --prefer-dist --optimize-autoloader
 
-# Make sur storage and cache folders are accessible
-RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
-RUN chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
-
-# Generate Laravel api key
+# Generate application key
 RUN php artisan key:generate
 
 # Execute migration
@@ -40,5 +39,12 @@ RUN php artisan migrate --force
 # Execute seeding
 RUN php artisan db:seed
 
+# Check for folders permissions
+chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
+chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
+
 # Expose port 80
 EXPOSE 80
+
+# Start Apache
+CMD ["apache2-foreground"]
