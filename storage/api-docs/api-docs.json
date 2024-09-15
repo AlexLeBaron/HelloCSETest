@@ -244,13 +244,35 @@
                                 "schema": {
                                     "type": "array",
                                     "items": {
-                                        "$ref": "#/components/schemas/Profile"
+                                        "properties": {
+                                            "id": {
+                                                "type": "integer"
+                                            },
+                                            "firstname": {
+                                                "type": "string"
+                                            },
+                                            "lastname": {
+                                                "type": "string"
+                                            },
+                                            "status": {
+                                                "type": "string"
+                                            }
+                                        },
+                                        "type": "object"
                                     }
                                 }
                             }
                         }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
             }
         },
         "/profiles/{id}": {

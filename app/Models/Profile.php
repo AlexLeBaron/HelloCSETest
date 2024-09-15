@@ -59,4 +59,15 @@ class Profile extends Model
     {
         return $this->belongsTo(Admin::class);
     }
+
+    public function toArray()
+    {
+        $array = parent::toArray();
+
+        if (auth()->check()) {
+            $this->makeVisible('status');
+        }
+
+        return parent::toArray();
+    }
 }

@@ -68,24 +68,27 @@ class ProfileController extends Controller
      *     description="Retrieve a list of all active profiles",
      *     operationId="getActiveProfiles",
      *     tags={"Profiles"},
+     *     security={{"sanctum": {}}},
      *     @OA\Response(
      *         response=200,
      *         description="List of active profiles",
      *         @OA\JsonContent(
      *             type="array",
-     *             @OA\Items(ref="#/components/schemas/Profile")
+     *             @OA\Items(
+     *                 type="object",
+     *                 @OA\Property(property="id", type="integer"),
+     *                 @OA\Property(property="firstname", type="string"),
+     *                 @OA\Property(property="lastname", type="string"),
+     *                 @OA\Property(property="status", type="string")
+     *             )
      *         )
-     *     )
+     *     ),
+     *     @OA\Response(response=401, description="Unauthorized")
      * )
      */
     public function indexActive(Request $request): JsonResponse
     {
         $profiles = Profile::where('status', 'active')->get();
-
-        // Si l'utilisateur est administrateur, rendre le champ status visible
-        if ($request->user()) {
-            $profiles->makeVisible('status');
-        }
 
         return response()->json($profiles, 200);
     }
