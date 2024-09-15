@@ -30,8 +30,9 @@ class AdminService implements AdminServiceInterface
      */
     public function authenticateAdmin(string $email, string $password): ?string
     {
-        if (Auth::attempt(['email' => $email, 'password' => $password])) {
-            $admin = Auth::user();
+        $admin = Admin::where('email', $email)->first();
+
+        if ($admin && Hash::check($password, $admin->password)) {
             return $admin->createToken('admin-token')->plainTextToken;
         }
 
