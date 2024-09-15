@@ -36,6 +36,9 @@ RUN composer install --no-interaction --prefer-dist --optimize-autoloader
 # Generate application key
 RUN php artisan key:generate
 
+# Create folder public/storage/images if it doesn't exist
+RUN mkdir -p /var/www/html/public/storage/images
+
 # Link storage folder to public folder
 RUN php artisan storage:link
 
