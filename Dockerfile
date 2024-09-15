@@ -46,21 +46,17 @@ RUN php artisan storage:link
 RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
 RUN chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
 
-# Vérifier les permissions des répertoires
-RUN ls -la /var/www/html/storage
-RUN ls -la /var/www/html/bootstrap/cache
-
 # RUN php artisan migrate:fresh and db:seed after waiting for mysql to be initiated
 CMD bash -c "cp .env.example .env && \
+            mkdir -p /var/www/html/public/storage/images && \
+            composer install --no-interaction --prefer-dist --optimize-autoloader && \
+            php artisan storage:link && \
             chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache && \
             chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache && \
             sleep 10 && php artisan migrate:fresh --force && \
             php artisan db:seed --force && \
             php artisan key:generate && \
             apache2-foreground"
-
-# Vérifier si le fichier .env est bien copié
-RUN ls -la /var/www/html/.env
 
 # Expose port 80
 EXPOSE 80 
