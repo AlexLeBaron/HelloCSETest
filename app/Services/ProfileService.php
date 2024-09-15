@@ -50,8 +50,10 @@ class ProfileService implements ProfileServiceInterface
      */
     public function deleteProfile(Profile $profile): bool
     {
-        // Delete image linked to profile
-        Storage::disk('public')->delete($profile->image);
+        // Delete image linked to profile if it exists
+        if ($profile->image) {
+            Storage::disk('public')->delete($profile->image);
+        }
         
         // Delete profile
         return $profile->delete();
