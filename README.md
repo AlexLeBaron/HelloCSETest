@@ -16,8 +16,8 @@ Ensure you have the following tools installed on your machine:
 First, clone the project from GitHub:
 
 ```bash
-git clone https://github.com/your-username/your-repo.git
-cd your-repo
+git git@github.com:AlexLeBaron/HelloCSETest.git
+cd HelloCSETest
 ``` 
 ### 2. Build and start the Docker containers
 
