@@ -39,12 +39,6 @@ RUN composer install --no-interaction --prefer-dist --optimize-autoloader
 # Generate application key
 RUN php artisan key:generate
 
-# Execute migration
-RUN php artisan migrate --force
-
-# Execute seeding
-RUN php artisan db:seed
-
 # Check for folders permissions
 RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
 RUN chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
