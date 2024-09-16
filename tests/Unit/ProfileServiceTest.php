@@ -9,6 +9,8 @@ use Illuminate\Http\UploadedFile;
 use App\Models\Profile;
 use App\Services\ProfileService;
 use Illuminate\Support\Facades\Storage;
+use Mockery;
+use Illuminate\Database\Eloquent\Collection;
 
 class ProfileServiceTest extends TestCase
 {
@@ -43,7 +45,26 @@ class ProfileServiceTest extends TestCase
     /**
      * @test
      */
-    public function updates_a_profile_with_new_image(): void
+    public function get_active_profiles(): void
+    {
+        $data = [
+            'firstname' => 'Jean',
+            'lastname' => 'Test',
+            'image' => UploadedFile::fake()->image('avatar.png'),
+            'status' => 'active',
+        ];
+
+        $profile = $this->profileService->createProfile($data);
+        $profiles = $this->profileService->getActiveProfiles();
+
+        $this->assertInstanceOf(Collection::class, $profiles);
+        $this->assertEquals('Jean', $profiles->first()->firstname);
+    }
+
+    /**
+     * @test
+     */
+    public function update_a_profile_with_new_image(): void
     {
         // Création d'un profil
         $profile = Profile::factory()->create([
@@ -79,7 +100,7 @@ class ProfileServiceTest extends TestCase
     /**
      * @test
      */
-    public function deletes_a_profile_and_its_image(): void
+    public function delete_a_profile_and_its_image(): void
     {
         // Création d'un profil avec une image
         $profile = Profile::factory()->create([

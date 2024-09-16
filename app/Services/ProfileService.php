@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Contracts\ProfileServiceInterface;
 use App\Models\Profile;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Database\Eloquent\Collection;
 
 class ProfileService implements ProfileServiceInterface
 {
@@ -57,5 +58,26 @@ class ProfileService implements ProfileServiceInterface
         
         // Delete profile
         return $profile->delete();
+    }
+
+    /**
+     * Get all active profiles
+     * @return Collection $profiles
+     */
+    public function getActiveProfiles(): Collection
+    {
+        return Profile::where('status', 'active')->get();
+    }
+
+    /**
+     * Get a profile by its id
+     * @param int $id
+     * @return Profile $profile
+     */
+    public function getProfileById(int $id): Profile
+    {
+        $profile = Profile::findOrFail($id);
+
+        return $profile;
     }
 }

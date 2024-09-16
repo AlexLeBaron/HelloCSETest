@@ -8,6 +8,7 @@ use App\Http\Requests\StoreProfileRequest;
 use App\Http\Requests\UpdateProfileRequest;
 use Illuminate\Http\JsonResponse;
 use App\Contracts\ProfileServiceInterface;
+use Illuminate\Contracts\View\View;
 
 class ProfileController extends Controller
 {
@@ -88,7 +89,7 @@ class ProfileController extends Controller
      */
     public function indexActive(Request $request): JsonResponse
     {
-        $profiles = Profile::where('status', 'active')->get();
+        $profiles = $this->profileService->getActiveProfiles();
 
         return response()->json($profiles, 200);
     }
@@ -170,5 +171,19 @@ class ProfileController extends Controller
         $this->profileService->deleteProfile($profile);
         
         return response()->json(['message' => 'Profile deleted successfully']);
+    }
+
+    public function showProfiles(): View
+    {
+        $profiles = $this->profileService->getActiveProfiles();
+        
+        return view('profiles.index', compact('profiles'));
+    }
+
+    public function showProfile(int $id): View
+    {
+        $profile = $this->profileService->getProfileById($id);
+
+        return view('profiles.show', compact('profile'));
     }
 }
