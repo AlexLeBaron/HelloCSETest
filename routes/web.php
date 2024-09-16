@@ -15,25 +15,26 @@ use App\Http\Controllers\AuthController;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+Route::middleware('web')->group(function () {
+    
+    // Public Route to get all active profiles
+    Route::get('/', function () {
+        return view('welcome');
+    })->name('home');
+
+    Route::get('/profiles', [ProfileController::class, 'showProfiles'])->name('profiles.index');
+
+    // Routes for authentication (register, login, logout)
+    Route::get('/register', [AuthController::class, 'showRegisterForm'])->name('register');
+    Route::post('/register', [AuthController::class, 'register']);
+    Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
+    Route::post('/login', [AuthController::class, 'login']);
+    Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
+    // Protected routes for authenticated administrators only
+    Route::middleware('auth:web')->group(function () {
+        Route::get('/profiles/{id}', [ProfileController::class, 'showProfile'])->name('profiles.show');
+        Route::get('/admin/dashboard', [AuthController::class, 'dashboard'])->name('admin.dashboard');
+    });
+
 });
-
-//Route to get all active profiles
-Route::get('/profiles', [ProfileController::class, 'showProfiles'])->name('profiles.index');
-
-// Route protected for profiles managment (administrator only)
-Route::middleware('auth:sanctum')->group(function () {
-    Route::get('/profiles/{id}', [ProfileController::class, 'showProfile'])->name('profiles.show');
-    Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
-});
-
-// Route to register and login
-Route::get('/register', [AuthController::class, 'showRegisterForm'])->name('register');
-Route::post('/register', [AuthController::class, 'register']);
-Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
-Route::post('/login', [AuthController::class, 'login']);
-
-// Route to logout
-Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
-

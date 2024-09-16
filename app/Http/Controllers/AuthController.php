@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Admin;
+use App\Models\Profile;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -45,20 +46,33 @@ class AuthController extends Controller
     // Login admin
     public function login(LoginAdminRequest $request): RedirectResponse
     {
-        $token = $this->adminService->authenticateAdmin($request->email, $request->password);
+        if (Auth::guard('web')->attempt($request->only('email', 'password'))) {
+            if ($request->hasSession()) {
+                $request->session()->regenerate();
+            }
 
-        Session::put('admin_token', $token);
+            return redirect()->route('admin.dashboard')->with('success', 'You are logged in');
+        }
 
-        return redirect()->route('admin.dashboard');
+        return back()->withErrors([
+            'email' => 'Les informations d\'identification sont incorrectes.',
+        ]);
     }
 
     // Logout admin
     public function logout(Request $request): RedirectResponse
     {
-        Auth::logout();
+        Auth::guard('web')->logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
         return redirect()->route('login');
+    }
+
+    public function dashboard()
+    {
+        $profiles = Profile::all();
+
+        return view('admin.dashboard', compact('profiles'));
     }
 }
