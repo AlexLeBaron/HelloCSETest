@@ -1,33 +1,23 @@
 @extends('layouts.app')
 
-@section('title', 'Inscription')
+@section('title', 'Register')
 
 @section('content')
-    <h2>Inscription</h2>
-    @if(session('success'))
-        <p>{{ session('success') }}</p>
+    <h1>Register</h1>
+
+    @if(session('error'))
+        <div class="alert">{{ session('error') }}</div>
     @endif
 
     <form action="{{ route('register') }}" method="POST">
         @csrf
-        <div>
-            <label for="email">Email:</label>
-            <input type="email" id="email" name="email" value="{{ old('email') }}" required>
-            @error('email')
-                <span>{{ $message }}</span>
-            @enderror
-        </div>
-        <div>
-            <label for="password">Mot de passe:</label>
-            <input type="password" id="password" name="password" required>
-            @error('password')
-                <span>{{ $message }}</span>
-            @enderror
-        </div>
-        <div>
-            <label for="password_confirmation">Confirmez le mot de passe:</label>
-            <input type="password" id="password_confirmation" name="password_confirmation" required>
-        </div>
-        <button type="submit">S'inscrire</button>
+        <input type="email" name="email" placeholder="Email" required>
+        <input type="password" name="password" placeholder="Password" required>
+        <input type="password" name="password_confirmation" placeholder="Confirm Password" required>
+        <button type="submit">Register</button>
     </form>
+
+    <div style="text-align: center; margin-top: 1rem;">
+        <a href="{{ route('login') }}">Already have an account? Login here</a>
+    </div>
 @endsection

@@ -1,19 +1,13 @@
 @extends('layouts.app')
 
-@section('title', 'Tableau de bord Admin')
+@section('title', 'Admin Dashboard')
 
 @section('content')
-    <h1>Bienvenue sur le panneau d'administration</h1>
+    <h1>Welcome, Admin</h1>
 
-    <p>C'est ici que vous pouvez gérer les profils et les utilisateurs.</p>
+    <p>You are logged in!</p>
 
-    @if(Session::has('admin_token'))
-        <p><strong>Votre token API :</strong> {{ Session::get('admin_token') }}</p>
-    @endif
-
-    <!-- Exemple de liens vers la gestion des profils -->
-    <ul>
-        <li><a href="{{ route('profiles.index') }}">Voir tous les profils</a></li>
-        <li><a href="{{ route('profiles.create') }}">Créer un nouveau profil</a></li>
-    </ul>
+    <div style="text-align: center; margin-top: 2rem;">
+        <a href="{{ route('logout') }}" style="color: red;">Logout</a>
+    </div>
 @endsection
